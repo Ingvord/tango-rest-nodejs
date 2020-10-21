@@ -1,0 +1,36 @@
+{
+  "name": "tango-rest-server",
+  "version": "0.0.1",
+  "description": "Tango Rest server implementation in NodeJS",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ingvord/tango-rest-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ingvord/tango-rest-nodejs/issues"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "devDependencies": {
+    "cmake-js": "^6.1.0",
+    "nan": "^2.14.2"
+  },
+  "scripts": {
+    "install": "cmake-js compile",
+    "test": "mocha test"
+  },
+  "contributors": [
+    "Ingvord <mail@ingvord.ru> (https://ingvord.ru/)"
+  ],
+  "license": "GPL-3",
+  "keywords": [
+    "tango",
+    "tango-controls",
+    "tango-rest"
+  ],
+  "dependencies": {
+    "bindings": "^1.5.0"
+  }
+}
