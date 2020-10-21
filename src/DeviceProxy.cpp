@@ -42,7 +42,7 @@ NAN_METHOD(DeviceProxy::New) {
     }
 
     // create a new instance and wrap our javascript instance
-    DeviceProxy *proxy = new DeviceProxy();
+    auto proxy = new DeviceProxy();
     proxy->Wrap(info.Holder());
 
     // initialize it's values
@@ -87,9 +87,9 @@ NAN_METHOD(DeviceProxy::ReadAttribute) {
 }
 
 NAN_GETTER(DeviceProxy::HandleGetters) {
-    DeviceProxy *self = Nan::ObjectWrap::Unwrap<DeviceProxy>(info.This());
+    auto *self = Nan::ObjectWrap::Unwrap<DeviceProxy>(info.This());
 
-    std::string propertyName = std::string(*Nan::Utf8String(property));
+    auto propertyName = std::string(*Nan::Utf8String(property));
     if (propertyName == "host") {
         info.GetReturnValue().SetUndefined();
     } else if (propertyName == "port") {
