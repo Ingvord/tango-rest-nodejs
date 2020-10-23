@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include "DeviceProxy.h"
+#include "AsyncTangoAttribute.h"
 
 Nan::Persistent<v8::FunctionTemplate> DeviceProxy::constructor;
 
@@ -66,7 +67,7 @@ NAN_METHOD(DeviceProxy::New) {
 
 NAN_METHOD(DeviceProxy::ReadAttribute) {
     // unwrap this Vector
-    DeviceProxy *self = Nan::ObjectWrap::Unwrap<DeviceProxy>(info.This());
+    auto self = Nan::ObjectWrap::Unwrap<DeviceProxy>(info.This());
 
     if (!info[0]->IsString()) {
         return Nan::ThrowError(Nan::New(
@@ -78,12 +79,17 @@ NAN_METHOD(DeviceProxy::ReadAttribute) {
     std::string attribute(*arg);
     std::cout << "Attribute=" << attribute << std::endl;
 
-    auto resp = self->_proxy->read_attribute(attribute);
+    //TODO clever logic
+//    auto resp = self->_proxy->read_attribute(attribute);
 
-    double value;
-    resp >> value;
+//    double value;
+//    resp >> value;
     // unwrap the Vector passed as argument
-    info.GetReturnValue().Set(value);
+//    info.GetReturnValue().Set(value);
+    auto callback = new Nan::Callback(info[1].As<v8::Function>());
+
+    Nan::AsyncQueueWorker(new AsyncTangoAttribute(callback, self->host, self->port, self->device, attribute));
+
 }
 
 NAN_GETTER(DeviceProxy::HandleGetters) {
