@@ -8,7 +8,7 @@
 #include <tango.h>
 
 class AsyncTangoAttribute : public Nan::AsyncWorker {
-private:
+protected:
     std::string host;
     int port;
     std::string device;
@@ -27,6 +27,19 @@ public:
     void Execute();
 
     void HandleOKCallback();
+};
+
+class AsyncTangoAttributeWriter : public AsyncTangoAttribute {
+private:
+    double value;
+
+
+public:
+    AsyncTangoAttributeWriter(Nan::Callback *callback, std::string host, int port, std::string device, std::string name, double v) :
+            AsyncTangoAttribute(callback,std::move(host),port,std::move(device),std::move(name)),
+            value(v){}
+
+    void Execute();
 };
 
 

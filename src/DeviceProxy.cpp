@@ -23,6 +23,8 @@ NAN_MODULE_INIT(DeviceProxy::Init) {
 
     Nan::SetPrototypeMethod(ctor, "readAttribute", ReadAttribute);
 
+    Nan::SetPrototypeMethod(ctor, "writeAttribute", WriteAttribute);
+
     target->Set(Nan::New("DeviceProxy").ToLocalChecked(), ctor->GetFunction());
 }
 
@@ -89,6 +91,39 @@ NAN_METHOD(DeviceProxy::ReadAttribute) {
     auto callback = new Nan::Callback(info[1].As<v8::Function>());
 
     Nan::AsyncQueueWorker(new AsyncTangoAttribute(callback, self->host, self->port, self->device, attribute));
+
+}
+
+NAN_METHOD(DeviceProxy::WriteAttribute) {
+        // unwrap this Vector
+        auto self = Nan::ObjectWrap::Unwrap<DeviceProxy>(info.This());
+
+        if (!info[0]->IsString()) {
+            return Nan::ThrowError(Nan::New(
+                    "DeviceProxy::WriteAttribute - expected argument - attribute name - to be instance of string").ToLocalChecked());
+        }
+
+        if (!info[1]->IsNumber()) {
+            return Nan::ThrowError(Nan::New(
+                    "DeviceProxy::WriteAttribute - expected argument - attribute value - to be instance of number").ToLocalChecked());
+        }
+
+        v8::String::Utf8Value arg(info[0]->ToString());
+        auto value(info[1]->NumberValue());
+
+        std::string attribute(*arg);
+        std::cout << "Attribute=" << attribute << std::endl;
+
+        //TODO clever logic
+//    auto resp = self->_proxy->read_attribute(attribute);
+
+//    double value;
+//    resp >> value;
+        // unwrap the Vector passed as argument
+//    info.GetReturnValue().Set(value);
+        auto callback = new Nan::Callback(info[2].As<v8::Function>());
+
+        Nan::AsyncQueueWorker(new AsyncTangoAttributeWriter(callback, self->host, self->port, self->device, attribute, value));
 
 }
 

@@ -21,6 +21,8 @@ public:
 
     static NAN_METHOD(ReadAttribute);
 
+    static NAN_METHOD(WriteAttribute);
+
     static NAN_GETTER(HandleGetters);
 
     static NAN_SETTER(HandleSetters);

@@ -23,3 +23,13 @@ void AsyncTangoAttribute::HandleOKCallback() {
     v8::Local<v8::Value> argv[] = {Nan::Null(), localValue};
     callback->Call(2, argv);
 }
+
+void AsyncTangoAttributeWriter::Execute() {
+    std::stringstream ss;
+    ss << "tango://" << this->host << ":" << this->port << "/" << this->device << "/" << this->name;
+    std::string fqdn = ss.str();
+    auto proxy = Tango::AttributeProxy(fqdn);
+    Tango::DeviceAttribute da(this->name, this->value);
+
+    result = proxy.write_read(da);
+}
