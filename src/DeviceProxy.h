@@ -8,9 +8,8 @@
 #include <tango.h>
 
 class DeviceProxy : public Nan::ObjectWrap {
-private:
-    Tango::DeviceProxy *_proxy;
 public:
+    Tango::DeviceProxy *proxy;
     std::string host;
     int port;
     std::string device;

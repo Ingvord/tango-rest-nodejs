@@ -59,7 +59,7 @@ NAN_METHOD(DeviceProxy::New) {
     ss << "tango://" << proxy->host << ":" << proxy->port << "/" << proxy->device;
     std::string fqdn = ss.str();
     std::cout << "FQDN=" << fqdn << std::endl;
-    proxy->_proxy = new Tango::DeviceProxy(fqdn);
+    proxy->proxy = new Tango::DeviceProxy(fqdn);
 
 
 
@@ -90,7 +90,7 @@ NAN_METHOD(DeviceProxy::ReadAttribute) {
 //    info.GetReturnValue().Set(value);
     auto callback = new Nan::Callback(info[1].As<v8::Function>());
 
-    Nan::AsyncQueueWorker(new AsyncTangoAttribute(callback, self->host, self->port, self->device, attribute));
+    Nan::AsyncQueueWorker(new AsyncTangoAttribute(callback, self->proxy, attribute));
 
 }
 
@@ -123,7 +123,7 @@ NAN_METHOD(DeviceProxy::WriteAttribute) {
 //    info.GetReturnValue().Set(value);
         auto callback = new Nan::Callback(info[2].As<v8::Function>());
 
-        Nan::AsyncQueueWorker(new AsyncTangoAttributeWriter(callback, self->host, self->port, self->device, attribute, value));
+        Nan::AsyncQueueWorker(new AsyncTangoAttributeWriter(callback, self->proxy, attribute, value));
 
 }
 

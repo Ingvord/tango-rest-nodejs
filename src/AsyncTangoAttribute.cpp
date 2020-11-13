@@ -6,11 +6,7 @@
 #include "AsyncTangoAttribute.h"
 
 void AsyncTangoAttribute::Execute() {
-    std::stringstream ss;
-    ss << "tango://" << this->host << ":" << this->port << "/" << this->device << "/" << this->name;
-    std::string fqdn = ss.str();
-    auto proxy = Tango::AttributeProxy(fqdn);
-    result = proxy.read();
+    result = device->read_attribute(name);
 }
 
 void AsyncTangoAttribute::HandleOKCallback() {
@@ -25,11 +21,7 @@ void AsyncTangoAttribute::HandleOKCallback() {
 }
 
 void AsyncTangoAttributeWriter::Execute() {
-    std::stringstream ss;
-    ss << "tango://" << this->host << ":" << this->port << "/" << this->device << "/" << this->name;
-    std::string fqdn = ss.str();
-    auto proxy = Tango::AttributeProxy(fqdn);
     Tango::DeviceAttribute da(this->name, this->value);
 
-    result = proxy.write_read(da);
+    result = device->write_read_attribute(da);
 }

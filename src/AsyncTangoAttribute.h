@@ -9,19 +9,15 @@
 
 class AsyncTangoAttribute : public Nan::AsyncWorker {
 protected:
-    std::string host;
-    int port;
-    std::string device;
+    Tango::DeviceProxy* device;
     std::string name;
     //TODO TangoProxy cache
     Tango::DeviceAttribute result;
 
 public:
-    AsyncTangoAttribute(Nan::Callback *callback, std::string host, int port, std::string device, std::string name) :
+    AsyncTangoAttribute(Nan::Callback *callback, Tango::DeviceProxy* device, std::string name) :
             Nan::AsyncWorker(callback),
-            host(std::move(host)),
-            port(port),
-            device(std::move(device)),
+            device(device),
             name(std::move(name)) {}
 
     void Execute();
@@ -35,8 +31,8 @@ private:
 
 
 public:
-    AsyncTangoAttributeWriter(Nan::Callback *callback, std::string host, int port, std::string device, std::string name, double v) :
-            AsyncTangoAttribute(callback,std::move(host),port,std::move(device),std::move(name)),
+    AsyncTangoAttributeWriter(Nan::Callback *callback, Tango::DeviceProxy* device, std::string name, double v) :
+            AsyncTangoAttribute(callback,device,std::move(name)),
             value(v){}
 
     void Execute();

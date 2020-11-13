@@ -3,7 +3,7 @@ const Tango = require("bindings")("TangoRestServer");
 const proxies = new Map();
 
 function processGetRequest(req){
-    const proxyId = `tango://${req.host}:${req.port}/${req.device}/${req.name}`;
+    const proxyId = `tango://${req.host}:${req.port}/${req.device}`;
 
     let proxy = proxies.get(proxyId);
     if(!proxy) {
@@ -20,7 +20,7 @@ function processGetRequest(req){
 }
 
 function processPutRequest(req){
-    const proxyId = `tango://${req.host}:${req.port}/${req.device}/${req.name}`;
+    const proxyId = `tango://${req.host}:${req.port}/${req.device}`;
 
     let proxy = proxies.get(proxyId);
     if(!proxy) {
